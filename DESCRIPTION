@@ -1,0 +1,17 @@
+Package: systemicrisk
+Type: Package
+Title: A Toolbox for Systemic Risk
+Version: 0.2
+Date: 2015-03-19
+Author: Axel Gandy and Luitgard A.M. Veraart
+Maintainer: Axel Gandy <a.gandy@imperial.ac.uk>
+Description: A toolbox for systemic risk based on liabilities matrices. Contains a Gibbs sampler for liabilities matrices where only row and column sums of the liabilities matrix are observed.
+License: GPL-3
+Imports: Rcpp (>= 0.11.2), lpSolve
+LinkingTo: Rcpp
+Suggests: testthat, knitr
+VignetteBuilder: knitr
+Packaged: 2015-03-19 20:59:36 UTC; agandy
+NeedsCompilation: yes
+Repository: CRAN
+Date/Publication: 2015-03-20 00:02:28

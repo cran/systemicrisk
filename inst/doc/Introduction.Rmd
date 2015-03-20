@@ -1,0 +1,72 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Some Introductory Examples}
+-->
+An example with 3 banks
+=======================
+
+This document describe a toy example for the use of the package systemicrisk.
+
+```{r}
+library(systemicrisk)
+```
+
+Suppose we are dealing with 3 banks and that they have total interbank
+liabilities/assets given by the following:
+```{r}
+l <- c(1,2.5,3)
+a <- c(0.7,2.7,3.1)
+```
+Suppose we are assuming $p=0.5$ and $\lambda=0.25$.
+Then we can run the Gibbs sampler to get a sample of the liabilities
+matrix condtional on $l$ and $a$.
+```{r}
+L <- sample_ERE(l,a,p=0.5,lambda=0.25,nsamples=200,thin=20,burnin=10)
+```
+Some examples of the matrics generated are below.
+```{r}
+L[[1]]
+L[[2]]
+L[[3]]
+```
+Diagnostic of the R-output
+--------------------------
+All the caveats of MCMC algorithms apply. In particular it is useful
+to plot the paths of the individual liabilities, which we do below
+for the liabilities of Bank 1 towards Bank 2.
+```{r fig.width=7,fig.height=4}
+plot(sapply(L,function(x)x[1,2]),type="b")
+```
+
+Also, the autocorrelation function should decline quickly.
+```{r fig.width=7,fig.height=4}
+acf(sapply(L,function(x)x[1,2]))
+```
+
+In this case it decays quickly below the white-noise threshold (the
+horizontal dashed lines).
+
+Default of banks
+----------------
+To be able to talk about default of banks  we need to know the
+external assets and liabilities of the banks.
+Suppose we assume the following:
+```{r}
+ea <- c(1,1,1)
+el <- c(1,1,1)
+```
+
+```{r}
+default(L[[1]],ea=ea,el=el)$defaultind
+default(L[[2]],ea=ea,el=el)$defaultind
+default(L[[3]],ea=ea,el=el)$defaultind
+```
+
+Below we apply two different default  algorithms (without default costs and with default costs) to the liabilities matrices and compute the average number of times each bank defaults.
+```{r}
+rowMeans(sapply(L, function(Lakt) default(Lakt,ea=ea,el=el)$defaultind))
+```
+```{r}
+rowMeans(sapply(L, function(Lakt) default(Lakt,ea=ea,el=el,alpha=0.98,beta=0.98)$defaultind))
+```
+

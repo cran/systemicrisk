@@ -1,0 +1,7 @@
+bibentry(bibtype = "unpublished",
+         title = "A Bayesian methodology  for systemic risk assessment in  financial networks",
+         author = c(person("Axel", "Gandy"),
+                    person("Luitgard A M", "Veraart")),
+         year = 2015,
+         note = "Available at SSRN")
+
