@@ -58,8 +58,8 @@ void setresDelta(NumericMatrix& L, vector<int> r, vector<int> c,  double Delta, 
   }
 }
 
-double lDelta(NumericMatrix L, NumericMatrix lambda, NumericMatrix p, std::vector<int> r, std::vector<int> c, double Delta, double eps){
-  double res=1;
+double loglDelta(NumericMatrix L, NumericMatrix lambda, NumericMatrix p, std::vector<int> r, std::vector<int> c, double Delta, double eps){
+  double res=0.;
   int k=c.size();
   for (int i=0; i<k; i++){
     for (int j=0; j<2; j++){
@@ -69,9 +69,9 @@ double lDelta(NumericMatrix L, NumericMatrix lambda, NumericMatrix p, std::vecto
       if (j==1) val-=Delta;
       else val+=Delta;
       if (val<eps){
-	res*=1-p(ir,ic);
+	res+=log(1-p(ir,ic));
       }else{
-	res*=p(ir,ic)*lambda(ir,ic)*exp(-lambda(ir,ic)*val);
+	res+=log(p(ir,ic))+log(lambda(ir,ic))-lambda(ir,ic)*val;
       }
     }
   }
@@ -79,6 +79,9 @@ double lDelta(NumericMatrix L, NumericMatrix lambda, NumericMatrix p, std::vecto
 }
 
 //' @title Does one Gibbs Step on a cycle
+//'
+//' @description Execute one Gibbs step on a cycle keeping
+//' row and column sums fixed
 //'
 //' @param r Row indies of cycle, starting at 0 (vector of length k)
 //' @param c Column indices of cycle, starting at 0 (vector of length k)
@@ -159,15 +162,22 @@ void ERE_step_cycle(std::vector<int> r, std::vector<int> c, NumericMatrix& L, Nu
       lambdamarg+=lambda(r[i],c[i])-lambda(r[i],c[(i+1)%k]);
     }
     lambdamarg=roundnum(lambdamarg,eps);
-    double pall= lDelta(L,lambda,p,r,c,(deltabound[0]+deltabound[1])/2.0,eps); // intermediate point to ensure no value of 0 at any position
+    double pall= loglDelta(L,lambda,p,r,c,(deltabound[0]+deltabound[1])/2.0,eps); // intermediate point to ensure no value of 0 at any position
     if (lambdamarg==0.)
-      pall*=len;
+      pall+=log(len);
     else
-      pall*=-1./lambdamarg*(exp(-lambdamarg*(len/2.))-exp(-lambdamarg*(-len/2.)));
+      pall+=log(-1./lambdamarg*(exp(-lambdamarg*(len/2.))-exp(-lambdamarg*(-len/2.))));
     double lh[2];
     for (int i=0; i<2; i++){
-      lh[i]=lDelta(L,lambda,p,r,c,deltabound[i],eps);
+      lh[i]=loglDelta(L,lambda,p,r,c,deltabound[i],eps);
     }
+    // correction for log-scale
+    double maxval = pall;
+    if (lh[0]>maxval) maxval=lh[0];
+    if (lh[1]>maxval) maxval=lh[1];
+    pall=exp(pall-maxval);
+    lh[0]=exp(lh[0]-maxval);
+    lh[1]=exp(lh[1]-maxval);
     double u=unif_rand()*(pall+lh[0]+lh[1]);
     if (pall+lh[0]+lh[1]==0.)
       throw Rcpp::exception("No case has positive likelihood.");
@@ -205,7 +215,12 @@ void ERE_step_cycle(std::vector<int> r, std::vector<int> c, NumericMatrix& L, Nu
     // to likelihood to decide
     double lh[2];
     for (int i=0; i<2; i++){
-      lh[i]=lDelta(L,lambda,p,r,c, deltabound[i],eps);
+      lh[i]=loglDelta(L,lambda,p,r,c, deltabound[i],eps);
+    }
+    double maxval2=lh[0];
+    if (lh[1]>maxval2) maxval2=lh[1];
+    for (int i=0; i<2; i++){
+      lh[i]=exp(lh[i]-maxval2);
     }
     double u=unif_rand()*(lh[0]+lh[1]);
     if (u<=lh[0]){
@@ -291,27 +306,56 @@ void GibbsSteps_kcycle(NumericMatrix& L, NumericMatrix lambda, NumericMatrix p,i
     int k=0;
     rit=rall.begin();
     cit=call.begin();
-    for (k=0; k<kmax; k++){
-      std::swap(*rit,*(rit+randWrapper(nrow-k)));
-      std::swap(*cit,*(cit+randWrapper(ncol-k)));
-      rit++;
+    //no movement if at least one zero picked in the odd and even parts of the cycle
+    int nzeros[2];
+    nzeros[1]=0;
+    bool discard=false;
+    std::swap(*cit,*(cit+randWrapper(ncol)));
+    std::swap(*rit,*(rit+randWrapper(nrow)));
+    nzeros[0]=(L(*rit,*cit)==0.);
+    for (k=1; k<kmax; k++){
       cit++;
+      std::swap(*cit,*(cit+randWrapper(ncol-k)));
+      if (L(*rit,*cit)==0.){
+	if (nzeros[0]>0){
+	  discard=true;
+	  break;
+	} else {
+	  nzeros[1]++;
+	}
+      }
+      rit++;
+      std::swap(*rit,*(rit+randWrapper(nrow-k)));
+      if (L(*rit,*cit)==0.){
+	if (nzeros[1]>0){
+	  discard=true;
+	  break;
+	} else {
+	  nzeros[0]++;
+	}
+      }
       ksel-=weights[k];
       if (ksel<0) break;
     }
-    std::vector<int> rsub(rall.begin(),rit);
-    std::vector<int> csub(call.begin(),cit);
-    if (debug){
-      Rcpp::Rcout<<"Row indices:";
-      for (unsigned int i=0; i<rsub.size(); i++)
-	Rcpp::Rcout<<rsub[i]<<",";
-      Rcpp::Rcout<<" ";
-      Rcpp::Rcout<<"Column indices:";
-      for (unsigned int i=0; i<rsub.size(); i++)
-	Rcpp::Rcout<<csub[i]<<",";
-      Rcpp::Rcout<<std::endl;
+    if (!discard){
+      if (L(*rit,call[0])>0.||nzeros[0]==0){//check last point
+	cit++;
+	rit++;
+	std::vector<int> rsub(rall.begin(),rit);
+	std::vector<int> csub(call.begin(),cit);
+	if (debug){
+	  Rcpp::Rcout<<"Row indices:";
+	  for (unsigned int i=0; i<rsub.size(); i++)
+	    Rcpp::Rcout<<rsub[i]<<",";
+	  Rcpp::Rcout<<" ";
+	  Rcpp::Rcout<<"Column indices:";
+	  for (unsigned int i=0; i<rsub.size(); i++)
+	    Rcpp::Rcout<<csub[i]<<",";
+	  Rcpp::Rcout<<std::endl;
+	}
+	ERE_step_cycle(rsub,csub,L,lambda,p,eps);
+      }
     }
-    ERE_step_cycle(rsub,csub,L,lambda,p,eps);
   }
   return;
 }

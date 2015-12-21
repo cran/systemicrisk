@@ -5,52 +5,58 @@
 
 using namespace Rcpp;
 
+// findFeasibleMatrix
+NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, NumericMatrix p, double eps);
+RcppExport SEXP systemicrisk_findFeasibleMatrix(SEXP rSEXP, SEXP cSEXP, SEXP pSEXP, SEXP epsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<double> >::type r(rSEXP);
+    Rcpp::traits::input_parameter< std::vector<double> >::type c(cSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type p(pSEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
+    __result = Rcpp::wrap(findFeasibleMatrix(r, c, p, eps));
+    return __result;
+END_RCPP
+}
 // cloneMatrix
 NumericMatrix cloneMatrix(NumericMatrix M);
 RcppExport SEXP systemicrisk_cloneMatrix(SEXP MSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP );
-        NumericMatrix __result = cloneMatrix(M);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix >::type M(MSEXP);
+    __result = Rcpp::wrap(cloneMatrix(M));
+    return __result;
 END_RCPP
 }
 // ERE_step_cycle
-void ERE_step_cycle(std::vector<int> r, std::vector<int> c, NumericMatrix& L, NumericMatrix lambda, NumericMatrix p, double eps = 1e-10);
+void ERE_step_cycle(std::vector<int> r, std::vector<int> c, NumericMatrix& L, NumericMatrix lambda, NumericMatrix p, double eps);
 RcppExport SEXP systemicrisk_ERE_step_cycle(SEXP rSEXP, SEXP cSEXP, SEXP LSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP epsSEXP) {
 BEGIN_RCPP
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< std::vector<int> >::type r(rSEXP );
-        Rcpp::traits::input_parameter< std::vector<int> >::type c(cSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix& >::type L(LSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type lambda(lambdaSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type p(pSEXP );
-        Rcpp::traits::input_parameter< double >::type eps(epsSEXP );
-        ERE_step_cycle(r, c, L, lambda, p, eps);
-    }
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< std::vector<int> >::type r(rSEXP);
+    Rcpp::traits::input_parameter< std::vector<int> >::type c(cSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type p(pSEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
+    ERE_step_cycle(r, c, L, lambda, p, eps);
     return R_NilValue;
 END_RCPP
 }
 // GibbsSteps_kcycle
-void GibbsSteps_kcycle(NumericMatrix& L, NumericMatrix lambda, NumericMatrix p, int it = 1000, double eps = 1e-10, int debug = 0);
+void GibbsSteps_kcycle(NumericMatrix& L, NumericMatrix lambda, NumericMatrix p, int it, double eps, int debug);
 RcppExport SEXP systemicrisk_GibbsSteps_kcycle(SEXP LSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP itSEXP, SEXP epsSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< NumericMatrix& >::type L(LSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type lambda(lambdaSEXP );
-        Rcpp::traits::input_parameter< NumericMatrix >::type p(pSEXP );
-        Rcpp::traits::input_parameter< int >::type it(itSEXP );
-        Rcpp::traits::input_parameter< double >::type eps(epsSEXP );
-        Rcpp::traits::input_parameter< int >::type debug(debugSEXP );
-        GibbsSteps_kcycle(L, lambda, p, it, eps, debug);
-    }
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< NumericMatrix& >::type L(LSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type it(itSEXP);
+    Rcpp::traits::input_parameter< double >::type eps(epsSEXP);
+    Rcpp::traits::input_parameter< int >::type debug(debugSEXP);
+    GibbsSteps_kcycle(L, lambda, p, it, eps, debug);
     return R_NilValue;
 END_RCPP
 }

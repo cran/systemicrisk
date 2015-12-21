@@ -2,6 +2,7 @@
 #' @useDynLib systemicrisk
 #' @importFrom Rcpp sourceCpp
 #' @importFrom lpSolve lp
+#' @import stats utils
 
 ###
 
@@ -16,8 +17,11 @@
 #'
 #' @param l vector of interbank libabilities
 #' @param a vector of interbank assets
-#' @param p Probability of existence of a link (either a numerical value or a matrix with diag(p)=0)
-#' @param lambda (either a numerical value or a matrix with diag(lambda=0))
+#' @param p probability of existence of a link (either a numerical
+#' value or a matrix). A single numerical value is converted into a
+#' matrix with 0s on the diagonal.
+#' @param lambda instensity parameters - either a numerical value or a
+#' matrix with positive entries)
 #' @inheritParams steps_ERE
 #' @return List of simulation results
 #'
@@ -46,7 +50,7 @@ sample_ERE <- function(l,
         lambda <- matrix(lambda,nrow=n,ncol=n);
         diag(lambda) <- 0
     }
-    L <- getfeasibleMatr(l,a)
+    L <- findFeasibleMatrix(l,a,p)
 
     steps_ERE(L=L,p=p,lambda=lambda,nsamples=nsamples,thin=thin,burnin=burnin)
 }

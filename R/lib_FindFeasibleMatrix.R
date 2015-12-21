@@ -1,7 +1,40 @@
+#' Creates a feasible starting matrix with a desired mean average degree
+#'
+#' This extension of \code{\link{findFeasibleMatrix}} attempts to
+#' create a feasible matrix where a certain proportion of the entries
+#' is positive. There is no guarantee that this proportion is
+#' achieved. If it is not possible then this matrix will report a warning
+#' and simply return the matrix constructed by findFeasibleMatrix.
+#'
+#' @inheritParams findFeasibleMatrix
+#' @param targetmean Average proportion of positive entries of the resulting matrix. Defaults to 0.3
+#' @export
+findFeasibleMatrix_targetmean <- function(r,c,p,eps=1e-9,targetmean=0.3){
+    Lorig <- findFeasibleMatrix(r=r,c=c,p=p,eps=eps)
+    if (mean(Lorig>0)<targetmean){
+        avgavailable <- mean(p>0)
+        psample <- min(1,(targetmean-mean(Lorig>0))/avgavailable)
+        Adjstart <- matrix(rbinom(length(r)*length(c),
+                                   size=1,
+                                   prob=psample*(p>0)),
+                         nrow=length(r),
+                         ncol=length(c)
+                         )
+        maxsaveval <- pmin(matrix(r/pmax(1,rowSums(Adjstart)),nrow=length(r),ncol=length(c)),
+                           matrix(c/pmax(1,colSums(Adjstart)),nrow=length(r),ncol=length(c),byrow=TRUE))
+        Lstart <- matrix(runif(length(r)*length(c))*maxsaveval,nrow=length(r))*Adjstart
+        Lstart+findFeasibleMatrix(r=r-rowSums(Lstart),c=c-colSums(Lstart),p=p,eps=eps)
+    }else{
+        warning("Desired mean degree is less than minimal degree that is necessary.");
+        Lorig
+    }
+}
+
+
 #' Creates a feasible starting matrix
 #'
 #' Creates a matrix with nonnegative entries, given row and column
-#' sums and 0 on the diagonal.
+#' sums and 0 on the diagonal. Superseeded by the more flexible findFeasibleMatrix.
 #'
 #' @param L Vector of row sums
 #' @param A Vector of column sums
@@ -57,7 +90,12 @@ getfeasibleMatr <- function(L,A){
             L <- Atmp
         }
     }
-    if (any(abs(rowSums(resall)-Lorig)>1e-9)||any(abs(colSums(resall)-Aorig)>1e-9))
-        browser()
+    if (any(abs(rowSums(resall)-Lorig)>1e-9)||any(abs(colSums(resall)-Aorig)>1e-9)){
+        warning("Discrepancy between intended row/column sums and ",
+                "row/column sums of generated matrix detected. ",
+                "This may only be a numerical issue. ",
+                "Maximum absolute difference between row and column sums: ",
+                max(abs(rowSums(resall)-Lorig),abs(colSums(resall)-Aorig)))
+    }
     resall
 }
