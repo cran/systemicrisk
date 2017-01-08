@@ -7,7 +7,8 @@
 sample_HierarchicalModel(l, a, L_fixed = NA, model, nsamples = 10000,
   thin = choosethin(l = l, a = a, L_fixed = L_fixed, model = model,
   matrpertheta = matrpertheta, silent = silent), burnin = NA,
-  matrpertheta = length(l)^2, silent = FALSE)
+  matrpertheta = length(l)^2, silent = FALSE,
+  tol = .Machine$double.eps^0.25)
 }
 \arguments{
 \item{l}{observed row sum}
@@ -30,6 +31,8 @@ of the steps in the sampling part.}
 \item{matrpertheta}{number of matrix updates per update of theta.}
 
 \item{silent}{(default FALSE) suppress all output (including progress bars).}
+
+\item{tol}{tolerance used in checks for equality. Defaults to \code{.Machine$double.eps^0.25}.}
 }
 \description{
 Sample from Hierarchical Model with given Row and Column Sums

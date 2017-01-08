@@ -18,8 +18,8 @@ typedef std::pair<int,int> PII;
 //'
 //' @param r vector of row sums (nonnegative
 //' @param c vector of column sums (nonnegative)
-//' @param p matrix of probabilities (must be in [0,1]), matching the dimensions of r and c. Values of p<eps are interpreted that the corresponding matrix elements have to be 0. Note: p=1 does not force the corresponding matrix element to exist.
-//' @param eps numerical values less than eps are interpreted as being 0. Default 1e-9.
+//' @param p matrix of probabilities (must be in [0,1]), matching the dimensions of r and c. Values of p=0 are interpreted that the corresponding matrix elements have to be 0. Note: p=1 does not force the corresponding matrix element to exist.
+//' @param eps row and col sums can at most be different by eps.  Default 1e-9.
 //' @return A feasible matrix.
 //'
 //' @examples
@@ -75,7 +75,7 @@ NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, N
   }
   for (unsigned i=0; i<r.size(); i++){
     for (unsigned j=0; j<c.size(); j++){
-      if (p(i,j)>eps){
+      if (p(i,j)>0){
 	unsigned a=i+1;
 	unsigned b=r.size()+j+1;
 	e[a].push_back(b);

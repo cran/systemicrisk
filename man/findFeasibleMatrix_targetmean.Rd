@@ -11,9 +11,9 @@ findFeasibleMatrix_targetmean(r, c, p, eps = 1e-09, targetmean = 0.3)
 
 \item{c}{vector of column sums (nonnegative)}
 
-\item{p}{matrix of probabilities (must be in [0,1]), matching the dimensions of r and c. Values of p<eps are interpreted that the corresponding matrix elements have to be 0. Note: p=1 does not force the corresponding matrix element to exist.}
+\item{p}{matrix of probabilities (must be in [0,1]), matching the dimensions of r and c. Values of p=0 are interpreted that the corresponding matrix elements have to be 0. Note: p=1 does not force the corresponding matrix element to exist.}
 
-\item{eps}{numerical values less than eps are interpreted as being 0. Default 1e-9.}
+\item{eps}{row and col sums can at most be different by eps.  Default 1e-9.}
 
 \item{targetmean}{Average proportion of positive entries of the resulting matrix. Defaults to 0.3}
 }

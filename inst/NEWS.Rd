@@ -1,6 +1,17 @@
 \name{NEWS}
 \title{News for Package 'systemicrisk'}
 
+\section{Changes in version 0.4}{
+  \itemize{
+    \item Added methods to calibrate models to a given density.
+  }
+}
+
+\section{Changes in version 0.3.1}{
+  \itemize{
+    \item Fixed parameter range checks for Fitness models.
+  }
+}
 \section{Changes in version 0.3 (2015-12-21)}{
   \itemize{
     \item Added Hierarchical Models.

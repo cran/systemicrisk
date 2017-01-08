@@ -380,6 +380,7 @@ Model.Indep.p.lambda <- function(model.p,model.lambda){
 #' @param nsamples number of samples to return.
 #' @param thin how many updates of theta to perform before outputting a sample.
 #' @param matrpertheta number of matrix updates per update of theta.
+#' @param tol tolerance used in checks for equality. Defaults to \code{.Machine$double.eps^0.25}.
 #'
 #' @examples
 #' n <- 10
@@ -410,7 +411,8 @@ sample_HierarchicalModel <- function (l, a, L_fixed=NA,
                                           silent=silent),
                                       burnin = NA,
                                       matrpertheta=length(l)^2,
-                                      silent=FALSE) {
+                                      silent=FALSE,
+                                      tol = .Machine$double.eps^0.25) {
     if (thin<1) stop("thin needs to be a positive integer")
     n <- length(l)
     res <- list()
@@ -421,14 +423,14 @@ sample_HierarchicalModel <- function (l, a, L_fixed=NA,
 
     if (is.matrix(L_fixed)){ ## find starting values for fixed values.
         if (any(dim(L_fixed)!=c(length(l),length(a))))
-            stop("Dimenstions of L_fixed, l and a do not match")
+            stop("Dimensions of L_fixed, l and a do not match")
         if (any(L_fixed<0,na.rm=TRUE)) stop("L_fixed has negative entries")
         l_fixed <- rowSums(L_fixed,na.rm=TRUE)
         a_fixed <- colSums(L_fixed,na.rm=TRUE)
-        if (any(l_fixed>l)) stop("A row sums of fixed entries is greater than desired row sum.")
-        if (any(a_fixed>a)) stop("A column sum of fixed entries is greater than desired row sum.")
+        if (any(l_fixed>l+tol)) stop("A row sums of fixed entries is greater than desired row sum.")
+        if (any(a_fixed>a+tol)) stop("A column sum of fixed entries is greater than desired row sum.")
         L_fixed_add <- ifelse(is.na(L_fixed),0,L_fixed)
-        L <- findFeasibleMatrix_targetmean(l-l_fixed,a-a_fixed,p=ifelse(is.na(L_fixed),u$p,0),targetmean=mean(genL(model)$L>0))
+        L <- findFeasibleMatrix_targetmean(pmax(0,l-l_fixed),pmax(0,a-a_fixed),p=ifelse(is.na(L_fixed),u$p,0),targetmean=mean(genL(model)$L>0))
         samplestep <- expression({
             theta <- model$update(L+L_fixed_add,theta)
             u <- model$matr(theta)
@@ -560,6 +562,7 @@ choosethin <- function(l, a, L_fixed=NA,
         })
         thinres <- max(thinfac*thin)
         if (thinres<=maxthin) {
+            thinres <- max(thinres,1)
             if (!silent) cat("Recommend thin=",thinres,".\n",sep="")
             return(thinres)
         } else {
