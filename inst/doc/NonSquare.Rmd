@@ -1,0 +1,41 @@
+<!--
+%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{Some Introductory Examples}
+-->
+Non-square matrices
+=======================
+
+This document describe an example of reconstructing a non-square matrix.
+
+```{r}
+library(systemicrisk)
+```
+
+Set up vectors of row and column sums of length 10 and 4,
+respectively, ensuring that their sums matches up.
+```{r}
+set.seed(1230)
+l <- rexp(10,rate=5/4)
+l
+a <- rexp(4);
+a <- a/sum(a)*sum(l)
+a
+```
+
+Construct a model with fixed matrix p and lambda.
+```{r}
+mod <- Model.Indep.p.lambda(model.p=Model.p.constant(p=matrix(0.5,nrow=10,ncol=4)),
+                            model.lambda=Model.lambda.constant(lambda=matrix(5,nrow=10,ncol=4)))
+```
+
+Run the sampler to generate 10 samples.
+```{r}
+res <- sample_HierarchicalModel(l=l,a=a,model=mod,nsamples=10,silent=TRUE)
+```
+
+Here are the first two of these samples.
+```{r}
+res$L[[1]]
+res$L[[2]]
+```
+

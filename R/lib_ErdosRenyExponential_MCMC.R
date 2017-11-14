@@ -1,5 +1,5 @@
 #### from devtools::use_rcpp()
-#' @useDynLib systemicrisk
+#' @useDynLib systemicrisk, .registration=TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom lpSolve lp
 #' @import stats utils

@@ -1,7 +1,14 @@
-bibentry(bibtype = "unpublished",
+bibentry(bibtype = "article",
          title = "A Bayesian methodology  for systemic risk assessment in  financial networks",
          author = c(person("Axel", "Gandy"),
                     person("Luitgard A M", "Veraart")),
-         year = 2015,
-         note = "Available at SSRN")
+         year = 2016,
+         journal = "Management Science",
+         note = "Article in Advance")
+bibentry(bibtype = "misc",
+         title = "Adjustable Network Reconstruction with Applications to CDS Exposures",
+         author = c(person("Axel", "Gandy"),
+                    person("Luitgard A M", "Veraart")),
+         year = 2017,
+         note = "Available at SSRN: https://ssrn.com/abstract=2895754")
 

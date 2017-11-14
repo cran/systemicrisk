@@ -246,7 +246,11 @@ Model.lambda.constant <- function(lambda,n){
              NULL
          },
          matr=function(theta){
-             matrix(lambda,nrow=n,ncol=n)
+             if (is.matrix(lambda)){
+                 lambda
+             }else{
+                 matrix(lambda,nrow=n,ncol=n)
+             }
          },
          rtheta=function() NULL,
          inittheta=function() NULL
@@ -602,7 +606,8 @@ genL <- function(model){
     theta <- model$rtheta()
     u <- model$matr(theta)
     n <- dim(u$p)[1]
-    res <- matrix((runif(n*n)<=u$p)*rexp(n*n,rate=u$lambda),nrow=n)
+    m <- dim(u$p)[2]
+    res <- matrix((runif(n*m)<=u$p)*rexp(n*m,rate=u$lambda),nrow=n)
     list(L=res,theta=theta)
 }
 

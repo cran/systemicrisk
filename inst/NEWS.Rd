@@ -1,6 +1,14 @@
 \name{NEWS}
 \title{News for Package 'systemicrisk'}
 
+\section{Changes in version 0.4.1}{
+  \itemize{
+    \item Addjusted that non-square matrices can be used (using fixed
+  matrices for p and lambda). See the new vignette as an example.
+  }
+}
+
+
 \section{Changes in version 0.4}{
   \itemize{
     \item Added methods to calibrate models to a given density.
