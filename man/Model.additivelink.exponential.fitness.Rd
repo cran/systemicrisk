@@ -43,4 +43,3 @@ a <- colSums(L$L)
 res <- sample_HierarchicalModel(l=l,a=a,model=mod,nsamples=4,thin=50)
 mod$accrates()
 }
-

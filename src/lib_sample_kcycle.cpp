@@ -14,7 +14,7 @@ double max(double a,double b){
 }
 inline int randWrapper(const int n) { return floor(unif_rand()*n); }//for resampling with STL
 
-//' Crates a deep copy of a matrix
+//' Creates a deep copy of a matrix
 //'
 //' Useful  when calling \code{\link{ERE_step_cycle}} or
 //' \code{\link{GibbsSteps_kcycle}} to ensure that
@@ -138,7 +138,7 @@ void ERE_step_cycle(std::vector<int> r, std::vector<int> c, NumericMatrix& L, Nu
   }
   double len = deltabound[1]-deltabound[0];
   if (len<eps){
-    if (abs(deltabound[0])>eps)
+    if (fabs(deltabound[0])>eps)
       throw Rcpp::exception("Unexpected state: upper bound for Delta equals lower bound for Delta should imply they are equal to 0");
     return; // nothing needs doing, Delta=0 will be used.
   }
@@ -276,10 +276,10 @@ void GibbsSteps_kcycle(NumericMatrix& L, NumericMatrix lambda, NumericMatrix p,i
 
   int kmax=min(nrow,ncol);
   std::vector<double> weights(kmax);
-  weights[kmax-1]=1.;
   weights[0]=0.;
-  for (int i=kmax-2;i>=1; i--){
-    weights[i]=weights[i+1]*2;
+  weights[1]=1000.;// arbitrary starting number
+  for (int i=2;i<kmax; i++){
+    weights[i]=weights[i-1]/2.;
   }
   double weightstot=weights[1]*2.-1.;
   for (int i=kmax-1;i>=0; i--){

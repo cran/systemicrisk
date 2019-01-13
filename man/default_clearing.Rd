@@ -49,4 +49,3 @@ systems. Management Science 47, 236--249.
 Rogers, L. C. G. and Veraart, L. A. M. (2013) Failure and Rescue in
 an Interbank Network, Management Science 59 (4), 882--898.
 }
-

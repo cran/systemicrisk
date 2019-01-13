@@ -38,4 +38,3 @@ L
 \seealso{
 \code{\link{sample_ERE}}
 }
-

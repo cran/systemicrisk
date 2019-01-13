@@ -1,8 +1,8 @@
 <!--
 %\VignetteEngine{knitr::knitr}
-%\VignetteIndexEntry{Some Introductory Examples}
+%\VignetteIndexEntry{Non-square Matrices}
 -->
-Non-square matrices
+Non-square Matrices
 =======================
 
 This document describe an example of reconstructing a non-square matrix.

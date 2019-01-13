@@ -52,4 +52,3 @@ Servedio V. D. P. and Caldarelli G. and Butta P. (2004)
 Vertex intrinsic fitness: How to produce arbitrary scale-free networks.
 \emph{Physical Review E} 70, 056126.
 }
-

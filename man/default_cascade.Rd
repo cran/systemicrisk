@@ -28,4 +28,3 @@ x <- 0.5
 L <- matrix(c(0,x,1-x,1-x,0,x,x,1-x,0),nrow=3)
 default_cascade(L,ea,el)
 }
-

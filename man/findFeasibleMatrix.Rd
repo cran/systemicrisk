@@ -42,4 +42,3 @@ Mnew
 rowSums(M);rowSums(Mnew)
 colSums(M);colSums(Mnew)
 }
-

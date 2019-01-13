@@ -1,6 +1,15 @@
 \name{NEWS}
 \title{News for Package 'systemicrisk'}
 
+\section{Changes in version 0.4.2}{
+  \itemize{
+    \item Bug fix for matrices of dimension > 1024.
+    \item Added specific support for some non-square matrices: Model.lambda.constant.nonsquare,
+  Model.p.constant.nonsquare, calibrate_ER.nonsquare.
+  }
+}
+
+
 \section{Changes in version 0.4.1}{
   \itemize{
     \item Addjusted that non-square matrices can be used (using fixed

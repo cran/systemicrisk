@@ -35,4 +35,3 @@ ERE_step_cycle(r=c(0,1,2),c=c(0,1,2),L=L,lambda=lambda,p=p)
 ERE_step_cycle(r=c(0,1,2),c=c(2,1,0),L=L,lambda=lambda,p=p)
 
 }
-

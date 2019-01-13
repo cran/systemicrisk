@@ -74,4 +74,3 @@ Lsamp <- sample_HierarchicalModel(l=rowSums(L),a=colSums(L),L_fixed=L_fixed,
 mean(Lsamp$L[[10]][-(1:(n/2)),]>0) # known entries
 mean(Lsamp$L[[10]][(1:(n/2)),]>0)  #reconstructed entries
 }
-

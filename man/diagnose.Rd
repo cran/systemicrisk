@@ -18,4 +18,3 @@ Currently only works with L where the diagonal is 0. The function
 ignores the diagonal and tries to determine from the row and column
 sums which parts of the matrix are 0.
 }
-

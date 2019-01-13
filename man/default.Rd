@@ -38,4 +38,3 @@ default(L,ea,el,"cascade")
 \seealso{
 \code{\link{default_cascade}},  \code{\link{default_clearing}},
 }
-

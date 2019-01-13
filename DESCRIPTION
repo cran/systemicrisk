@@ -1,8 +1,8 @@
 Package: systemicrisk
 Type: Package
 Title: A Toolbox for Systemic Risk
-Version: 0.4.1
-Date: 2017-11-14
+Version: 0.4.2
+Date: 2019-01-13
 Author: Axel Gandy and Luitgard A.M. Veraart
 Maintainer: Axel Gandy <a.gandy@imperial.ac.uk>
 Description: A toolbox for systemic risk based on liabilities matrices. Contains
@@ -14,8 +14,8 @@ Imports: lpSolve, Rcpp (>= 0.11.2), stats, utils
 LinkingTo: Rcpp
 Suggests: coda, testthat, knitr
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: yes
-Packaged: 2017-11-14 12:06:15 UTC; agandy
+Packaged: 2019-01-13 21:20:47 UTC; agandy
 Repository: CRAN
-Date/Publication: 2017-11-14 12:24:25 UTC
+Date/Publication: 2019-01-13 21:40:03 UTC

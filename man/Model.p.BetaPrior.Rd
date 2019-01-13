@@ -24,4 +24,3 @@ probabilities p. This model has a one-dimensional parameter.
 m <- Model.p.BetaPrior(5)
 m$matr(m$rtheta())
 }
-

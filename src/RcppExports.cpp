@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // findFeasibleMatrix
 NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, NumericMatrix p, double eps);
-RcppExport SEXP systemicrisk_findFeasibleMatrix(SEXP rSEXP, SEXP cSEXP, SEXP pSEXP, SEXP epsSEXP) {
+RcppExport SEXP _systemicrisk_findFeasibleMatrix(SEXP rSEXP, SEXP cSEXP, SEXP pSEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -21,7 +21,7 @@ END_RCPP
 }
 // cloneMatrix
 NumericMatrix cloneMatrix(NumericMatrix M);
-RcppExport SEXP systemicrisk_cloneMatrix(SEXP MSEXP) {
+RcppExport SEXP _systemicrisk_cloneMatrix(SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -32,7 +32,7 @@ END_RCPP
 }
 // ERE_step_cycle
 void ERE_step_cycle(std::vector<int> r, std::vector<int> c, NumericMatrix& L, NumericMatrix lambda, NumericMatrix p, double eps);
-RcppExport SEXP systemicrisk_ERE_step_cycle(SEXP rSEXP, SEXP cSEXP, SEXP LSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP epsSEXP) {
+RcppExport SEXP _systemicrisk_ERE_step_cycle(SEXP rSEXP, SEXP cSEXP, SEXP LSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP epsSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< std::vector<int> >::type r(rSEXP);
@@ -47,7 +47,7 @@ END_RCPP
 }
 // GibbsSteps_kcycle
 void GibbsSteps_kcycle(NumericMatrix& L, NumericMatrix lambda, NumericMatrix p, int it, double eps, int debug);
-RcppExport SEXP systemicrisk_GibbsSteps_kcycle(SEXP LSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP itSEXP, SEXP epsSEXP, SEXP debugSEXP) {
+RcppExport SEXP _systemicrisk_GibbsSteps_kcycle(SEXP LSEXP, SEXP lambdaSEXP, SEXP pSEXP, SEXP itSEXP, SEXP epsSEXP, SEXP debugSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix& >::type L(LSEXP);

@@ -23,4 +23,3 @@ in the fitness model implemented in
 \code{\link{Model.additivelink.exponential.fitness}}. The function
 returns the mean out-degree divided by n-1.
 }
-

@@ -24,4 +24,3 @@ is positive. There is no guarantee that this proportion is
 achieved. If it is not possible then this matrix will report a warning
 and simply return the matrix constructed by findFeasibleMatrix.
 }
-

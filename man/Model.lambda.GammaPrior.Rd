@@ -19,4 +19,3 @@ Model.lambda.GammaPrior(n, shape = 1, scale = 1)
 Assumes that all elements of lambda are equal to a parameter
 \eqn{\theta}{theta}, which has a Gamma prior.
 }
-

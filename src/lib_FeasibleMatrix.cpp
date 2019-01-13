@@ -50,7 +50,7 @@ NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, N
   // check that sum of r and sum of c match
   double rtot=std::accumulate(r.begin(), r.end(), 0.0);
   double ctot=std::accumulate(c.begin(),c.end(),0.0);
-  if (abs(rtot-ctot)>eps)
+  if (fabs(rtot-ctot)>eps)
     throw Rcpp::exception("Sums of r and c differ by more than eps.");
 
   // Build Graph
@@ -165,7 +165,7 @@ NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, N
     for (unsigned j=0; j<c.size(); j++){
       tot+=res(i,j);
     }
-    if (abs(tot-r[i])>eps)
+    if (fabs(tot-r[i])>eps)
       rwrong.push_back(i+1);  //+1 to adjust for how R indexes vectors
   }
   for (unsigned i=0; i<c.size(); i++){
@@ -173,7 +173,7 @@ NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, N
     for (unsigned j=0; j<r.size(); j++){
       tot+=res(j,i);
     }
-    if (abs(tot-c[i])>eps)
+    if (fabs(tot-c[i])>eps)
       cwrong.push_back(i+1); //+1 to adjust for how R indexes vectors
   }
   if (rwrong.size()>0||cwrong.size()>0){

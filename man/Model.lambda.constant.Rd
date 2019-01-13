@@ -25,4 +25,3 @@ lambda<-matrix(c(NA,1,1,1e-4,NA,1e-4,1e4,1e4,NA),nrow=3)
 m <- Model.lambda.constant(n=3,lambda=lambda)
 m$matr(m$rtheta())
 }
-

@@ -32,10 +32,10 @@
 #' colSums(M);colSums(Mnew)
 #' @export
 findFeasibleMatrix <- function(r, c, p, eps = 1e-9) {
-    .Call('systemicrisk_findFeasibleMatrix', PACKAGE = 'systemicrisk', r, c, p, eps)
+    .Call(`_systemicrisk_findFeasibleMatrix`, r, c, p, eps)
 }
 
-#' Crates a deep copy of a matrix
+#' Creates a deep copy of a matrix
 #'
 #' Useful  when calling \code{\link{ERE_step_cycle}} or
 #' \code{\link{GibbsSteps_kcycle}} to ensure that
@@ -56,7 +56,7 @@ findFeasibleMatrix <- function(r, c, p, eps = 1e-9) {
 #' Lcopy ## still has the original value
 #' @export
 cloneMatrix <- function(M) {
-    .Call('systemicrisk_cloneMatrix', PACKAGE = 'systemicrisk', M)
+    .Call(`_systemicrisk_cloneMatrix`, M)
 }
 
 #' @title Does one Gibbs Step on a cycle
@@ -82,7 +82,7 @@ cloneMatrix <- function(M) {
 #'
 #' @export
 ERE_step_cycle <- function(r, c, L, lambda, p, eps = 1e-10) {
-    invisible(.Call('systemicrisk_ERE_step_cycle', PACKAGE = 'systemicrisk', r, c, L, lambda, p, eps))
+    invisible(.Call(`_systemicrisk_ERE_step_cycle`, r, c, L, lambda, p, eps))
 }
 
 #' Gibbs sampling step of a matrix in the ERE model
@@ -114,6 +114,6 @@ ERE_step_cycle <- function(r, c, L, lambda, p, eps = 1e-10) {
 #' L
 #' @export
 GibbsSteps_kcycle <- function(L, lambda, p, it = 1000L, eps = 1e-10, debug = 0L) {
-    invisible(.Call('systemicrisk_GibbsSteps_kcycle', PACKAGE = 'systemicrisk', L, lambda, p, it, eps, debug))
+    invisible(.Call(`_systemicrisk_GibbsSteps_kcycle`, L, lambda, p, it, eps, debug))
 }
 

@@ -24,4 +24,3 @@ m <- Model.Indep.p.lambda(Model.p.BetaPrior(n),
 genL(m)
 
 }
-

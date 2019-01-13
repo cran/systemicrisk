@@ -44,6 +44,38 @@ Model.p.constant <- function(n,p){
 }
 
 
+#' Model for a constant p and Non-Square Matrices
+#'
+#' This model assumes that the link existence probabilities of the
+#' matrix are known.
+#'
+#' @param nrow number of rows of the matrix.
+#' @param ncol number of columns of the matrix.
+#' @param p existence probability of a link.  A single numeric value.
+#'
+#' @return the resulting model.
+#'
+#' @examples
+#' m <- Model.p.constant.nonsquare(5,3,0.25)
+#' m$matr(m$rtheta())
+#'
+
+#' @export
+Model.p.constant.nonsquare <- function(nrow,ncol,p){
+    list(dim=0,
+         update= function(L,theta){
+             NULL
+         },
+         matr=function(theta){
+              matrix(p,nrow=nrow,ncol=ncol)
+         },
+         rtheta=function() NULL,
+         inittheta=function() NULL
+         )
+}
+
+
+
 #' Model for a Random One-dimensional p
 #'
 #' Assumes a Beta prior on the one-dimensional link existence
@@ -256,6 +288,35 @@ Model.lambda.constant <- function(lambda,n){
          inittheta=function() NULL
          )
 }
+
+
+#' Model for a Constant lambda and Non-Square Matrices
+#'
+#' This model assumes that the parameter lambda is known.
+#'
+#' @param nrow number of rows of the matrix.
+#' @param ncol number of columns of the matrix.
+#' @param lambda paramer for the size of the liabilities. A single numeric value.
+#'
+#' @return the resulting model.
+#'
+#' @examples
+#' m <- Model.lambda.constant.nonsquare(nrow=5,ncol=3,lambda=0.25)
+#' m$matr(m$rtheta())
+#' @export
+Model.lambda.constant.nonsquare <- function(lambda,nrow,ncol){
+    list(dim=0,
+         update= function(L,theta){
+             NULL
+         },
+         matr=function(theta){
+             matrix(lambda,nrow=nrow,ncol=ncol)
+         },
+         rtheta=function() NULL,
+         inittheta=function() NULL
+         )
+}
+
 
 #' Model with Gamma Prior on Lambda
 #'

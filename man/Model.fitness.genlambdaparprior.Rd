@@ -29,4 +29,3 @@ Assumes a uniform distribution on the shape parameter \code{zeta} and an
 exponential distribution on the scale parameter \code{eta}. To be used
 as prior for \code{\link{Model.additivelink.exponential.fitness}}.
 }
-

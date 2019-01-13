@@ -26,4 +26,3 @@ getfeasibleMatr(2^(1:3),2^(3:1))
 getfeasibleMatr(1:5,1:5)
 getfeasibleMatr(1:5,5:1)
 }
-

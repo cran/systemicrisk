@@ -27,4 +27,3 @@ component following an independent Beta distribution. A matrix
 indicates which component \eqn{\theta}{theta} is used for what
 component of lambda.
 }
-

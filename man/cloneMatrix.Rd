@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{cloneMatrix}
 \alias{cloneMatrix}
-\title{Crates a deep copy of a matrix}
+\title{Creates a deep copy of a matrix}
 \usage{
 cloneMatrix(M)
 }
@@ -30,4 +30,3 @@ L     ## new value
 Lold  ## equal to L !!!
 Lcopy ## still has the original value
 }
-

@@ -41,4 +41,3 @@ diag(p) <- 0
 GibbsSteps_kcycle(L=L,lambda=lambda,p=p)
 L
 }
-

@@ -57,4 +57,3 @@ sapply(res$L,function(x)x[1,2:5])
 }
 
 }
-
