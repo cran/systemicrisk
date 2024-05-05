@@ -4,8 +4,14 @@
 \alias{Model.additivelink.exponential.fitness}
 \title{Fitness model for liabilities matrix}
 \usage{
-Model.additivelink.exponential.fitness(n, alpha, beta, gamma = 1, lambdaprior,
-  sdpropfitness = 1/sqrt(n))
+Model.additivelink.exponential.fitness(
+  n,
+  alpha,
+  beta,
+  gamma = 1,
+  lambdaprior,
+  sdpropfitness = 1/sqrt(n)
+)
 }
 \arguments{
 \item{n}{Number of nodes in the model.}

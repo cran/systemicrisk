@@ -17,6 +17,9 @@ findFeasibleMatrix_targetmean(r, c, p, eps = 1e-09, targetmean = 0.3)
 
 \item{targetmean}{Average proportion of positive entries of the resulting matrix. Defaults to 0.3}
 }
+\value{
+A feasible matrix.
+}
 \description{
 This extension of \code{\link{findFeasibleMatrix}} attempts to
 create a feasible matrix where a certain proportion of the entries

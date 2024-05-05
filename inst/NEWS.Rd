@@ -1,6 +1,13 @@
 \name{NEWS}
 \title{News for Package 'systemicrisk'}
 
+\section{Changes in version 0.4.3}{
+  \itemize{
+    \item Seeds set in Vignettes.
+  }
+}
+
+
 \section{Changes in version 0.4.2}{
   \itemize{
     \item Bug fix for matrices of dimension > 1024.

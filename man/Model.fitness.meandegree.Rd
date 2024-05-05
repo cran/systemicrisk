@@ -15,6 +15,9 @@ Model.fitness.meandegree(alpha, beta, gamma = 1)
 \item{gamma}{Upper endpoint of the relative expected out degree
 (expected out degree divided by n-1). Must be at least beta and at most 1.}
 }
+\value{
+Mean out-degree divided by n-1.
+}
 \description{
 Computes the relative mean out-degree of a randomly chosen node
 given fitness \code{x} in the fitness model implemented in

@@ -17,6 +17,9 @@ Model.fitness.conditionalmeandegree(x, alpha, beta, gamma = 1)
 \item{gamma}{Upper endpoint of the relative expected out degree
 (expected out degree divided by n-1). Must be at least beta and at most 1.}
 }
+\value{
+Mean out-degree divided by n-1.
+}
 \description{
 Computes the mean out-degree of a node with given fitness \code{x}
 in the fitness model implemented in

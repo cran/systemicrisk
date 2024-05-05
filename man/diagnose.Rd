@@ -2,12 +2,15 @@
 % Please edit documentation in R/HierarchicalModels.R
 \name{diagnose}
 \alias{diagnose}
-\title{Outputs Effective Sample Size Diagonis for MCMC run}
+\title{Outputs Effective Sample Size Diagonistics for MCMC run}
 \usage{
 diagnose(res)
 }
 \arguments{
 \item{res}{output from \code{\link{sample_HierarchicalModel}}.}
+}
+\value{
+No return value. Called for printing the diagnostics.
 }
 \description{
 Computes the Effective Sample Size using the method

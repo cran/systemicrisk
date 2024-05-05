@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // findFeasibleMatrix
 NumericMatrix findFeasibleMatrix(std::vector<double> r, std::vector<double> c, NumericMatrix p, double eps);
 RcppExport SEXP _systemicrisk_findFeasibleMatrix(SEXP rSEXP, SEXP cSEXP, SEXP pSEXP, SEXP epsSEXP) {

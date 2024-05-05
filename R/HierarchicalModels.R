@@ -182,6 +182,7 @@ Model.p.Betaprior_mult <- function(Ip, shape1=1,shape2=1){
 #' @param meandegree overall mean degree (expected degree divided by number of nodes). Must be in (0,1).
 #' @param sdprop standard deviation of updated steps.
 #'
+#' @return the resulting model.
 #'
 #' @examples
 #' n <- 5
@@ -329,6 +330,7 @@ Model.lambda.constant.nonsquare <- function(lambda,nrow,ncol){
 #' @param scale scale paramer for prior on
 #' \eqn{\theta}{theta}. Default 1.
 #'
+#' @return the resulting model.
 #' @export
 Model.lambda.GammaPrior <- function(n,shape=1,scale=1){
     list(dim=1,
@@ -388,6 +390,8 @@ Model.lambda.Gammaprior_mult <- function(Ilambda, shape=1,scale=1){
 #' @param model.p model for p.
 #' @param model.lambda model for lambda.
 #'
+#' @return the resulting model.
+#' 
 #' @examples
 #' n <- 5
 #' m <- Model.Indep.p.lambda(Model.p.BetaPrior(n),
@@ -447,6 +451,8 @@ Model.Indep.p.lambda <- function(model.p,model.lambda){
 #' @param matrpertheta number of matrix updates per update of theta.
 #' @param tol tolerance used in checks for equality. Defaults to \code{.Machine$double.eps^0.25}.
 #'
+#' @return The resulting samples. A list with the first element, L, giving the samples of matrices, and the second element, theta, giving the samples of the hyperparameter (if hyperparameters are present). 
+#' 
 #' @examples
 #' n <- 10
 #' m <- Model.Indep.p.lambda(Model.p.BetaPrior(n),
@@ -454,13 +460,13 @@ Model.Indep.p.lambda <- function(model.p,model.lambda){
 #' x <- genL(m)
 #' l <- rowSums(x$L)
 #' a <- colSums(x$L)
-#' \dontrun{
+#' \donttest{
 #' res <- sample_HierarchicalModel(l,a,model=m)
 #' }
 #' # fixing one values
 #' L_fixed <- matrix(NA,ncol=n,nrow=n)
 #' L_fixed[1,2:5] <- x$L[1,2:5]
-#' \dontrun{
+#' \donttest{
 #' res <- sample_HierarchicalModel(l,a,model=m,L_fixed=L_fixed,
 #'                                 nsamples=1e2)
 #' sapply(res$L,function(x)x[1,2:5])
@@ -510,7 +516,7 @@ sample_HierarchicalModel <- function (l, a, L_fixed=NA,
             GibbsSteps_kcycle(L = L, p = u$p, lambda = u$lambda, it = matrpertheta)
         })
     }
-    if (!silent) cat("Burn-in\n")
+    if (!silent) message("Burn-in")
     if (is.na(burnin))
         burnin <- round(0.05*nsamples*thin)
     if (burnin>0){
@@ -519,9 +525,10 @@ sample_HierarchicalModel <- function (l, a, L_fixed=NA,
             eval(samplestep);
             if (!silent) setTxtProgressBar(pb, i)
         }
+        if (!silent) close(pb)
     }
 
-    if (!silent) cat("\nSampling\n")
+    if (!silent) message("Sampling")
     if (!silent) pb <- txtProgressBar(min=0,max=nsamples,style=3)
     for (i in 1:nsamples) {
         for (j in 1:thin){
@@ -536,8 +543,7 @@ sample_HierarchicalModel <- function (l, a, L_fixed=NA,
             restheta[,i] <- theta
         if (!silent) setTxtProgressBar(pb, i)
     }
-    if (!silent) cat("\n")
-
+    if (!silent) close(pb)
     if (model$dim>0)
         list(L=res,theta=restheta)
     else
@@ -570,37 +576,37 @@ sample_HierarchicalModel <- function (l, a, L_fixed=NA,
 #' @param relESStarget Target for the relative effective sample size,
 #' must be in (0,1). Default 0.3.
 #' @param maxthin Upper bound on thinning to consider. Default 10000.
+#' @return An integer describing the amount of thinning required. 
 #'
 #' @examples
+#' set.seed(12689)
 #' n <- 10
 #' m <- Model.Indep.p.lambda(Model.p.BetaPrior(n),
 #'                           Model.lambda.GammaPrior(n,scale=1e-1))
 #' x <- genL(m)
 #' l <- rowSums(x$L)
 #' a <- colSums(x$L)
-#' \dontrun{
 #' choosethin(l,a,model=m)
 #' choosethin(l,a,model=m,relESStarget=0.7)
-#' }
 #'@export
 choosethin <- function(l, a, L_fixed=NA,
                          model,
                          relESStarget=0.3, burnin = 100,
                          matrpertheta=length(l)^2,
-                         silent=FALSE,
+                         silent=TRUE,
                          maxthin=10000) {
     if (relESStarget<=0 || relESStarget>=1) stop("relESStarget needs to be in (0,1).")
     if (!silent)
-        cat("Determining thinning needed to achieve relative ESS of ",relESStarget,".\n",sep="")
+        message("Determining thinning needed to achieve relative ESS of ",relESStarget,".",sep="")
     ## adjust target to build in a safety margin
     relESStarget <- min(0.1,(1-relESStarget)/2)+relESStarget
     if (!silent)
-        cat("To include a safety margin, aiming for relative ESS of ",relESStarget,".\n",sep="")
+        message("To include a safety margin, aiming for relative ESS of ",relESStarget,".",sep="")
 
     nsamples <- 1e3
     thin <- 1
     while(thin<maxthin){
-        if (!silent) cat("Pilot run with thin=",thin," started.\n",sep="")
+        if (!silent) message("Pilot run with thin=",thin," started.",sep="")
         res <- sample_HierarchicalModel(l=l,a=a,L_fixed=L_fixed,model=model,burnin=burnin,matrpertheta=matrpertheta,silent=silent,thin=thin,nsamples=nsamples)
         allvariables <- sapply(res$L,function(x) c(x))
         allvariables <- rbind(allvariables,res$theta)
@@ -628,18 +634,18 @@ choosethin <- function(l, a, L_fixed=NA,
         thinres <- max(thinfac*thin)
         if (thinres<=maxthin) {
             thinres <- max(thinres,1)
-            if (!silent) cat("Recommend thin=",thinres,".\n",sep="")
+            if (!silent) message("Recommend thin=",thinres,".",sep="")
             return(thinres)
         } else {
             thin <- thin*10;
             if (!silent) {
-                cat("Need to increase thinning in pilot sample.\n")
+                message("Need to increase thinning in pilot sample.")
                 names <- c(outer(1:length(l),1:length(a),FUN=function(x,y) paste("L[",x,",",y,"]",sep="")))
                 if (!is.null(res$theta))
                     names <- c(names,paste("theta[",1:(dim(res$theta)[1]),"]",sep=""))
-                cat("Variables for which determining required thinning failed are:\n",
-                    names[thinfac*thin>maxthin],"\n")
-                 cat("Using now thin=",thin,".\n",sep="")
+                message("Variables for which determining required thinning failed are:\n",
+                    names[thinfac*thin>maxthin])
+                 message("Using now thin=",thin,".",sep="")
             }
         }
     }
@@ -678,11 +684,11 @@ getfixed <- function(l,a,printresults=TRUE){
     ##Ignore columns and rows with sum 0
     NArow <- l==0
     if (sum(NArow)>0){
-        cat("Row sum ",paste(which(NArow),collapse=" "),"are zero.\n")
+        message("Row sum ",paste(which(NArow),collapse=" "),"are zero.")
     }
     NAcol <- a==0
     if (sum(NArow)>0){
-        cat("Column sum ",paste(which(NArow),collapse=" "),"are zero.\n")
+        message("Column sum ",paste(which(NArow),collapse=" "),"are zero.")
     }
 
     ## this is not a full check of the condition, but it helps a bit
@@ -692,13 +698,12 @@ getfixed <- function(l,a,printresults=TRUE){
         for (i in which(wl)){
             wa <- which(a==l[i])
             if (length(wa)==1){
-                cat("Sum of Row ",i," = Sum of Column ",wa,". ",
-                    "\n",sep="")
+                message("Sum of Row ",i," = Sum of Column ",wa,". ")
                 NArow[i] <- TRUE
                 NAcol[wa] <- TRUE
             }else{
-                cat("Sum of Row ",i," matches sums of columns ",wa,". ",
-                    "Rows and Columns NOT ignored.\n",sep="")
+                message("Sum of Row ",i," matches sums of columns ",wa,". ",
+                    "Rows and Columns NOT ignored.")
             }
         }
     }
@@ -714,13 +719,12 @@ getfixed <- function(l,a,printresults=TRUE){
                 if (any(w,na.rm=TRUE)){
                     wa <- which(rowSums(w,na.rm=TRUE)>0)
                     if (length(wa)==2){
-                        cat("Row sum ",i," equal to sum of columns ",paste(wa,collapse=" "),". ",
-                            "\n",sep="")
+                        message("Row sum ",i," equal to sum of columns ",paste(wa,collapse=" "),". ")
                         NArow[i] <- TRUE
                         NAcol[wa] <- TRUE
                     }else{
-                        cat("Row sum ",i,"equal to some subsets of  the columns ",paste(wa,collapse=" "),". ",
-                            "Matrix not necessarily deterministics.\n",sep="")
+                        message("Row sum ",i,"equal to some subsets of  the columns ",paste(wa,collapse=" "),". ",
+                            "Matrix not necessarily deterministics.")
                     }
 
 
@@ -739,12 +743,12 @@ getfixed <- function(l,a,printresults=TRUE){
                 if (any(w,na.rm=TRUE)){
                     wl <- which(rowSums(w,na.rm=TRUE)>0)
                     if (length(wl)==2){
-                        cat("Column sum ",i," equal to sum of rows ",paste(wl,collapse=" "),".\n",sep="")
+                        message("Column sum ",i," equal to sum of rows ",paste(wl,collapse=" "),".")
                         NAcol[i] <- TRUE
                         NArow[wl] <- TRUE
                     }else{
-                        cat("Column sum  ",i,"equal to two of the row sums: ",paste(wl,collapse=" "),".",
-                            "Matrix not necessarily deterministics.\n",sep="")
+                        message("Column sum  ",i,"equal to two of the row sums: ",paste(wl,collapse=" "),".",
+                            "Matrix not necessarily deterministics.")
                     }
 
 
@@ -755,7 +759,7 @@ getfixed <- function(l,a,printresults=TRUE){
     list(row=NArow,col=NAcol)
 }
 
-#' Outputs Effective Sample Size Diagonis for MCMC run
+#' Outputs Effective Sample Size Diagonistics for MCMC run
 #'
 #' Computes the Effective Sample Size using the method
 #' \code{effectiveSize} in of the package \code{coda}.
@@ -766,6 +770,8 @@ getfixed <- function(l,a,printresults=TRUE){
 #'
 #' @param res output from \code{\link{sample_HierarchicalModel}}.
 #'
+#' @return No return value. Called for printing the diagnostics.
+#' 
 #' @export
 diagnose <- function(res){
     if (!all(sapply(res$L,diag)==0))
@@ -789,15 +795,15 @@ diagnose <- function(res){
         stop("Entire matrix deterministic. No remaining elements to sample over! \n")
     }
     allL <- sapply(res$L, rmNA)
-    cat("Analysis does not consider ",prod(dim(res$L[[1]]))-dim(allL)[1]," entries of matrix \n",
-        "that are deterministic (diagonal elements, row/column sum=0 or forced result).\n",sep="")
+    message("Analysis does not consider ",prod(dim(res$L[[1]]))-dim(allL)[1]," entries of matrix \n",
+        "that are deterministic (diagonal elements, row/column sum=0 or forced result).")
     ## check how many matrix entries have moved
     notmoved <- rowSums((allL[,1]!=allL))==0
     if (sum(notmoved)==0)
-        cat("All remaining elements of the liabilities matrix have moved during sample run.\n")
+        message("All remaining elements of the liabilities matrix have moved during sample run.")
     else{
-        cat("Number of matrix entries not moving: ",sum(notmoved),"\n")
-        cat("Of those always equal to 0: ",sum(allL[notmoved,1]==0),"\n")
+        message("Number of matrix entries not moving: ",sum(notmoved))
+        message("Of those always equal to 0: ",sum(allL[notmoved,1]==0))
         rownotmoved <- rmNA(matrix(1:n,nrow=n,ncol=n))[notmoved]
         colnotmoved <- rmNA(t(matrix(1:n,nrow=n,ncol=n)))[notmoved]
         o <- order(rownotmoved,colnotmoved)
@@ -807,18 +813,19 @@ diagnose <- function(res){
         for (i in 1:min(100,length(rownotmoved))){
             if (rownotmoved[i]!=lastr){
                 lastr <- rownotmoved[i]
-                cat("\n Row ",lastr,"; Columns:")
+                message("\n Row ",lastr,"; Columns:",appendLF = FALSE)
             }
-            cat(" ",colnotmoved[i])
+            message(" ",colnotmoved[i],appendLF=FALSE)
         }
-        cat("\n")
-        if (length(rownotmoved)>100) cat("Output truncated to 100 not-moving values\n")
+        message("\n",appendLF=FALSE)
+        if (length(rownotmoved)>100) message("Output truncated to 100 not-moving values.")
     }
-    cat("ESS in matrix:\n")
-    print(summary(coda::effectiveSize(t(allL))))
+    essL <- summary(coda::effectiveSize(t(allL)))
+    message("Summary of ESS in matrix: ", paste(names(essL),format(essL),sep="=", collapse=" "))
+    
     if ("theta" %in% names(res)){
-        cat("ESS in theta:\n")
-        print(summary(coda::effectiveSize(t(res$theta))))
+        essTheta <- summary(coda::effectiveSize(t(res$theta)))
+        message("Summary of ESS in theta: ", paste(names(essTheta),format(essTheta),sep="=", collapse=" "))
     }else
-        cat("No hyperparameter theta\n")
+        message("No hyperparameter theta\n")
 }

@@ -4,8 +4,17 @@
 \alias{choosethin}
 \title{Calibrate Thinning}
 \usage{
-choosethin(l, a, L_fixed = NA, model, relESStarget = 0.3, burnin = 100,
-  matrpertheta = length(l)^2, silent = FALSE, maxthin = 10000)
+choosethin(
+  l,
+  a,
+  L_fixed = NA,
+  model,
+  relESStarget = 0.3,
+  burnin = 100,
+  matrpertheta = length(l)^2,
+  silent = TRUE,
+  maxthin = 10000
+)
 }
 \arguments{
 \item{l}{observed row sum}
@@ -30,6 +39,9 @@ of the steps in the sampling part.}
 
 \item{maxthin}{Upper bound on thinning to consider. Default 10000.}
 }
+\value{
+An integer describing the amount of thinning required.
+}
 \description{
 Attempts to automatically choose a thinning paramter to achieve an
 overall relative effective sample size (defined as the effective
@@ -51,14 +63,13 @@ as the parameter theta). The initial pilot run may not be
 sufficient and further pilot runs may have to be started.
 }
 \examples{
+set.seed(12689)
 n <- 10
 m <- Model.Indep.p.lambda(Model.p.BetaPrior(n),
                           Model.lambda.GammaPrior(n,scale=1e-1))
 x <- genL(m)
 l <- rowSums(x$L)
 a <- colSums(x$L)
-\dontrun{
 choosethin(l,a,model=m)
 choosethin(l,a,model=m,relESStarget=0.7)
-}
 }

@@ -11,6 +11,9 @@ Model.Indep.p.lambda(model.p, model.lambda)
 
 \item{model.lambda}{model for lambda.}
 }
+\value{
+the resulting model.
+}
 \description{
 Combination of Independent Models for p and lambda
 }

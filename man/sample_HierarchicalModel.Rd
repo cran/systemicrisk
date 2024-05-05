@@ -4,11 +4,19 @@
 \alias{sample_HierarchicalModel}
 \title{Sample from Hierarchical Model with given Row and Column Sums}
 \usage{
-sample_HierarchicalModel(l, a, L_fixed = NA, model, nsamples = 10000,
-  thin = choosethin(l = l, a = a, L_fixed = L_fixed, model = model,
-  matrpertheta = matrpertheta, silent = silent), burnin = NA,
-  matrpertheta = length(l)^2, silent = FALSE,
-  tol = .Machine$double.eps^0.25)
+sample_HierarchicalModel(
+  l,
+  a,
+  L_fixed = NA,
+  model,
+  nsamples = 10000,
+  thin = choosethin(l = l, a = a, L_fixed = L_fixed, model = model, matrpertheta =
+    matrpertheta, silent = silent),
+  burnin = NA,
+  matrpertheta = length(l)^2,
+  silent = FALSE,
+  tol = .Machine$double.eps^0.25
+)
 }
 \arguments{
 \item{l}{observed row sum}
@@ -34,6 +42,9 @@ of the steps in the sampling part.}
 
 \item{tol}{tolerance used in checks for equality. Defaults to \code{.Machine$double.eps^0.25}.}
 }
+\value{
+The resulting samples. A list with the first element, L, giving the samples of matrices, and the second element, theta, giving the samples of the hyperparameter (if hyperparameters are present).
+}
 \description{
 Sample from Hierarchical Model with given Row and Column Sums
 }
@@ -44,13 +55,13 @@ m <- Model.Indep.p.lambda(Model.p.BetaPrior(n),
 x <- genL(m)
 l <- rowSums(x$L)
 a <- colSums(x$L)
-\dontrun{
+\donttest{
 res <- sample_HierarchicalModel(l,a,model=m)
 }
 # fixing one values
 L_fixed <- matrix(NA,ncol=n,nrow=n)
 L_fixed[1,2:5] <- x$L[1,2:5]
-\dontrun{
+\donttest{
 res <- sample_HierarchicalModel(l,a,model=m,L_fixed=L_fixed,
                                 nsamples=1e2)
 sapply(res$L,function(x)x[1,2:5])

@@ -17,7 +17,7 @@ linkfun <- function(z, alpha, beta, gamma=1){
 #' given fitness \code{x} in the fitness model implemented in
 #' \code{\link{Model.additivelink.exponential.fitness}}. The function
 #' returns the mean out-degree divided by n-1.
-#'
+#' @return Mean out-degree divided by n-1.
 #' @inheritParams Model.additivelink.exponential.fitness
 #' 
 #' @export
@@ -36,6 +36,7 @@ Model.fitness.meandegree <- function(alpha,beta,gamma=1){
 #'
 #' @param x Fitness of node. A nonegative number.
 #' @inheritParams Model.additivelink.exponential.fitness
+#' @return Mean out-degree divided by n-1.
 #' 
 #' @export
 Model.fitness.conditionalmeandegree <- function(x,alpha,beta,gamma=1){
@@ -214,8 +215,8 @@ Model.additivelink.exponential.fitness <- function(n,alpha,beta,gamma=1,lambdapr
              c(fitness=rep(1,n),lambdaprior$r())
          },
          accrates=function(){
-             cat("Acceptance rate for fitness updates:",nupdateaccept_fitness/nupdates,"\n")
-             cat("Acceptance rate for lambdapar updates:", nupdateaccept_lambdapar/nupdates,"\n")
+             message("Acceptance rate for fitness updates:",nupdateaccept_fitness/nupdates)
+             message("Acceptance rate for lambdapar updates:", nupdateaccept_lambdapar/nupdates)
          })
 
 }

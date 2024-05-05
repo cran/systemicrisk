@@ -4,8 +4,14 @@
 \alias{calibrate_ER}
 \title{Calibrate ER model to a given density}
 \usage{
-calibrate_ER(l, a, targetdensity, L_fixed = NA, nsamples_calib = 100,
-  thin_calib = 100)
+calibrate_ER(
+  l,
+  a,
+  targetdensity,
+  L_fixed = NA,
+  nsamples_calib = 100,
+  thin_calib = 100
+)
 }
 \arguments{
 \item{l}{row sums of matrix to be reconstructed}

@@ -8,6 +8,7 @@
 #'
 #' @inheritParams findFeasibleMatrix
 #' @param targetmean Average proportion of positive entries of the resulting matrix. Defaults to 0.3
+#' @return A feasible matrix.
 #' @export
 findFeasibleMatrix_targetmean <- function(r,c,p,eps=1e-9,targetmean=0.3){
     Lorig <- findFeasibleMatrix(r=r,c=c,p=p,eps=eps)

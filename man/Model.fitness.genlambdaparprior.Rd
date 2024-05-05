@@ -4,8 +4,13 @@
 \alias{Model.fitness.genlambdaparprior}
 \title{Prior distribution for eta and zeta in the fitness model}
 \usage{
-Model.fitness.genlambdaparprior(shapemin = 0.75, shapemax = 1.5, ratescale,
-  sdshapeprob = 0.1, sdpropscale = 0.1)
+Model.fitness.genlambdaparprior(
+  shapemin = 0.75,
+  shapemax = 1.5,
+  ratescale,
+  sdshapeprob = 0.1,
+  sdpropscale = 0.1
+)
 }
 \arguments{
 \item{shapemin}{Minimal Value of the shape parameter. Default: 0.75.}

@@ -15,6 +15,9 @@ Model.lambda.GammaPrior(n, shape = 1, scale = 1)
 \item{scale}{scale paramer for prior on
 \eqn{\theta}{theta}. Default 1.}
 }
+\value{
+the resulting model.
+}
 \description{
 Assumes that all elements of lambda are equal to a parameter
 \eqn{\theta}{theta}, which has a Gamma prior.

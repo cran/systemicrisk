@@ -8,6 +8,7 @@ An example using the fitness model
 This document describe a toy example for the use of the package systemicrisk.
 
 ```{r}
+set.seed(1238190) # arbitrary seed
 library(systemicrisk)
 ```
 Suppose we observe the following vector of total liabilities and todal assets.

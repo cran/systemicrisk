@@ -1,21 +1,22 @@
 Package: systemicrisk
 Type: Package
-Title: A Toolbox for Systemic Risk
-Version: 0.4.2
-Date: 2019-01-13
-Author: Axel Gandy and Luitgard A.M. Veraart
-Maintainer: Axel Gandy <a.gandy@imperial.ac.uk>
-Description: A toolbox for systemic risk based on liabilities matrices. Contains
-    a Gibbs sampler for liabilities matrices where only row and column sums of the
-    liabilities matrix as well as some other fixed entries are observed. Includes models 
-    for power law distribution on the degree distribution.
+Title: Systemic Risk and Network Reconstruction
+Version: 0.4.3
+Date: 2024-05-03
+Authors@R: c(person(given="Axel",family="Gandy", role=c("aut","cre"),email="a.gandy@imperial.ac.uk"),
+             person(given="Luitgard A.M.",family="Veraart", role=c("aut")))
+Description: Analysis of risk through liability matrices. Contains a Gibbs sampler for network reconstruction,  where only row and column sums of the liabilities matrix as well as some other fixed entries are observed, following the methodology of Gandy&Veraart (2016) <doi:10.1287/mnsc.2016.2546>. It also incorporates models that use a power law distribution on the degree distribution.
 License: GPL-3
 Imports: lpSolve, Rcpp (>= 0.11.2), stats, utils
 LinkingTo: Rcpp
 Suggests: coda, testthat, knitr
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+Encoding: UTF-8
+RoxygenNote: 7.3.1
 NeedsCompilation: yes
-Packaged: 2019-01-13 21:20:47 UTC; agandy
+Packaged: 2024-05-03 16:09:45 UTC; agandy
+Author: Axel Gandy [aut, cre],
+  Luitgard A.M. Veraart [aut]
+Maintainer: Axel Gandy <a.gandy@imperial.ac.uk>
 Repository: CRAN
-Date/Publication: 2019-01-13 21:40:03 UTC
+Date/Publication: 2024-05-05 21:10:02 UTC

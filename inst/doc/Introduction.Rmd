@@ -8,6 +8,7 @@ An example with 3 banks
 This document describe a toy example for the use of the package systemicrisk.
 
 ```{r}
+set.seed(123910) # arbitrary seed 
 library(systemicrisk)
 ```
 

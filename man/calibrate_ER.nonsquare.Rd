@@ -4,8 +4,14 @@
 \alias{calibrate_ER.nonsquare}
 \title{Calibrate ER model to a given density with a nonsquare matrix}
 \usage{
-calibrate_ER.nonsquare(l, a, targetdensity, L_fixed = NA,
-  nsamples_calib = 100, thin_calib = 100)
+calibrate_ER.nonsquare(
+  l,
+  a,
+  targetdensity,
+  L_fixed = NA,
+  nsamples_calib = 100,
+  thin_calib = 100
+)
 }
 \arguments{
 \item{l}{row sums of matrix to be reconstructed}

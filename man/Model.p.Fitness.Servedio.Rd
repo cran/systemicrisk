@@ -15,6 +15,9 @@ Model.p.Fitness.Servedio(n, alpha, meandegree, sdprop = 0.1)
 
 \item{sdprop}{standard deviation of updated steps.}
 }
+\value{
+the resulting model.
+}
 \description{
 This model has a power law of the degree distribution with a
 parameter {\eqn{\alpha}{alpha}} and is tuned to a desired link

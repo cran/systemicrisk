@@ -69,9 +69,9 @@ calibrate_FitnessEmp <- function(l,a,targetdensity,L_fixed=NA,
     fitness <- fitness-mean(fitness)
 
     f <- function(alpha){
-        cat("alpha=",alpha,"\n")
+        message("alpha=",alpha)
         pmatr <- outer(fitness,fitness,FUN=function(x,y) 1/(1+exp(-(alpha+x+y))))
-        print(range(pmatr))
+        message(range(pmatr))
         model<-Model.Indep.p.lambda(model.p=Model.p.constant(n=n, p=pmatr), model.lambda=Model.lambda.constant(lambda=lambda, n=n))
         Lsamp <- sample_HierarchicalModel(l,a,L_fixed=L_fixed,model=model,
                                           nsamples=nsamples_calib,thin=thin_calib)
@@ -84,7 +84,7 @@ calibrate_FitnessEmp <- function(l,a,targetdensity,L_fixed=NA,
     res <- uniroot(f,interval=c(-10,10),extendInt="yes",tol=0.01,maxiter=20)
 
     alpha <- res$root
-    cat("alpha=",alpha,"\n")
+    message("alpha=",alpha)
     pmatr <- outer(fitness,fitness,FUN=function(x,y) 1/(1+exp(-(alpha+x+y))))
     Model.Indep.p.lambda(model.p=Model.p.constant(n=n, p=pmatr), model.lambda=Model.lambda.constant(lambda=lambda, n=n))
 }
@@ -139,7 +139,7 @@ calibrate_ER <- function(l,a,targetdensity,L_fixed=NA,
         n_free <- n*n
     lambda <- 1/(sum(l)/(targetdensity*n_free))
     f <- function(p){
-        cat("p=",p,"\n")
+        message("p=",p)
         model<-Model.Indep.p.lambda(model.p=Model.p.constant(n=n, p=p), model.lambda=Model.lambda.constant(lambda=lambda, n=n))
         Lsamp <- sample_HierarchicalModel(l,a,L_fixed=L_fixed,model=model,
                                           nsamples=nsamples_calib,thin=1e2)
@@ -152,7 +152,7 @@ calibrate_ER <- function(l,a,targetdensity,L_fixed=NA,
     res <- uniroot(f,interval=c(0,1),f.lower=-targetdensity,f.upper=1-targetdensity,tol=0.01,maxiter=20)
     
     p <- res$root
-    cat("p=",p,"\n")
+    message("p=",p)
     Model.Indep.p.lambda(model.p=Model.p.constant(n=n, p=p), model.lambda=Model.lambda.constant(lambda=lambda, n=n))
 }
 
@@ -210,7 +210,7 @@ calibrate_ER.nonsquare <- function(l,a,targetdensity,L_fixed=NA,
         n_free <- nrow*ncol
     lambda <- 1/(sum(l)/(targetdensity*n_free))
     f <- function(p){
-        cat("p=",p,"\n")
+        message("p=",p)
         model<-Model.Indep.p.lambda(model.p=Model.p.constant.nonsquare(nrow=nrow,ncol=ncol, p=p),
                                     model.lambda=Model.lambda.constant.nonsquare(lambda=lambda, nrow=nrow, ncol=ncol))
         Lsamp <- sample_HierarchicalModel(l,a,L_fixed=L_fixed,model=model,
@@ -224,7 +224,7 @@ calibrate_ER.nonsquare <- function(l,a,targetdensity,L_fixed=NA,
     res <- uniroot(f,interval=c(0,1),f.lower=-targetdensity,f.upper=1-targetdensity,tol=0.01,maxiter=20)
     
     p <- res$root
-    cat("p=",p,"\n")
+    message("p=",p)
     Model.Indep.p.lambda(model.p=Model.p.constant.nonsquare(nrow=nrow,ncol=ncol, p=p),
                          model.lambda=Model.lambda.constant.nonsquare(lambda=lambda, nrow=nrow, ncol=ncol))
 }
